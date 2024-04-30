@@ -70,3 +70,24 @@ class VendorPerformanceAPIView(APIView):
                 {"message": "Vendor not found"}, 
                 status=status.HTTP_404_NOT_FOUND
             )
+
+
+class PurchaseOrderAcknowledgeAPIView(APIView):
+    """
+    Allows vendors to acknowledge purchase orders.
+    """
+    
+    def post(self, request, po_id):
+        try:
+            purchase_order = PurchaseOrder.objects.get(pk=po_id)
+            purchase_order.acknowledgment_date = timezone.now()
+            purchase_order.save()
+            update_average_response_time(purchase_order.vendor)
+            return Response(
+                {"message": "Purchase order acknowledged successfully."}
+            )
+        except PurchaseOrder.DoesNotExist:
+            return Response(
+                {"message": "Purchase order not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
