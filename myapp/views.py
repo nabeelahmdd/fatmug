@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from myapp.helpers_func import *
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class VendorView(
@@ -24,6 +25,7 @@ class VendorView(
     """
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class PurchaseOrderView(
@@ -40,6 +42,7 @@ class PurchaseOrderView(
     """
     lookup_field = 'po_number'
     serializer_class = PurchaseOrderSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """
@@ -59,7 +62,8 @@ class VendorPerformanceAPIView(APIView):
     """
     Retrieve performance metrics for a specific vendor.
     """
-    
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, vendor_id):
         try:
             vendor = Vendor.objects.get(pk=vendor_id)
@@ -76,6 +80,7 @@ class PurchaseOrderAcknowledgeAPIView(APIView):
     """
     Allows vendors to acknowledge purchase orders.
     """
+    permission_classes = (IsAuthenticated,)
     
     def post(self, request, po_id):
         try:
