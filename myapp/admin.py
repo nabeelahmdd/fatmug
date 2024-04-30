@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 from myapp.models import (
-    Vendor, PurchaseOrder
+    Vendor, PurchaseOrder, HistoricalPerformance
 )
 # Register your models here.
 
@@ -29,4 +29,19 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(PurchaseOrder, PurchaseOrderAdmin)
+
+
+
+class HistoricalPerformanceAdmin(admin.ModelAdmin):
+    list_display = (
+        'vendor', 'date',
+    )
+    search_fields = (
+        'vendor__name',
+    )
+    list_filter = (
+        'date',
+    )
+
+admin.site.register(HistoricalPerformance, HistoricalPerformanceAdmin)
 
