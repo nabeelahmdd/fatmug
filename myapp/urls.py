@@ -4,6 +4,7 @@ from myapp.views import (
     VendorView, PurchaseOrderView, VendorPerformanceAPIView,
     PurchaseOrderAcknowledgeAPIView,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 router = DefaultRouter()
 
@@ -16,4 +17,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('vendors/<int:vendor_id>/performance/', VendorPerformanceAPIView.as_view(), name='vendor-performance'),
     path('purchase_orders/<int:po_id>/acknowledge/', PurchaseOrderAcknowledgeAPIView.as_view(), name='purchase-order-acknowledge'),
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]
