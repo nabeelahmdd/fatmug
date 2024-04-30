@@ -1,10 +1,14 @@
 from rest_framework import mixins, viewsets
 from myapp.models import (
-    Vendor, PurchaseOrder
+    Vendor, PurchaseOrder,
 )
 from myapp.serializer import (
     VendorSerializer, PurchaseOrderSerializer
 )
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from myapp.helpers_func import *
 
 # Create your views here.
 class VendorView(
@@ -49,3 +53,20 @@ class PurchaseOrderView(
             qs = qs.filter(vendor__name__icontains=search)
 
         return qs
+
+
+class VendorPerformanceAPIView(APIView):
+    """
+    Retrieve performance metrics for a specific vendor.
+    """
+    
+    def get(self, request, vendor_id):
+        try:
+            vendor = Vendor.objects.get(pk=vendor_id)
+            serializer = VendorSerializer(vendor)
+            return Response(serializer.data)
+        except Vendor.DoesNotExist:
+            return Response(
+                {"message": "Vendor not found"}, 
+                status=status.HTTP_404_NOT_FOUND
+            )

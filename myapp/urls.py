@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from myapp.views import (
-    VendorView, PurchaseOrderView
+    VendorView, PurchaseOrderView, VendorPerformanceAPIView,
 )
 
 router = DefaultRouter()
@@ -13,4 +13,5 @@ router.register('purchase_orders', PurchaseOrderView,
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('vendors/<int:vendor_id>/performance/', VendorPerformanceAPIView.as_view(), name='vendor-performance'),
 ]
